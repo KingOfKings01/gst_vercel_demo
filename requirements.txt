@@ -1,7 +1,6 @@
-playwright
-opencv-python
-numpy
+playwright-core==1.42.1
+opencv-python-headless
+numpy==1.26.4
 ddddocr
 flask
-pandas
 openpyxl
