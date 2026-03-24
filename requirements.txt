@@ -1,7 +1,4 @@
-playwright-core==1.49.1
-opencv-python-headless
-numpy
-ddddocr
+playwright
 flask
 openpyxl
 beautifulsoup4
