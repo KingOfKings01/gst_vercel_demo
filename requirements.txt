@@ -1,0 +1,7 @@
+playwright
+opencv-python
+numpy
+ddddocr
+flask
+pandas
+openpyxl
