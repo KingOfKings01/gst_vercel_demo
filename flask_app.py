@@ -7,10 +7,14 @@ import openpyxl
 from gst_automation_playwright import run_batch_gst_search_excel
 
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['OUTPUT_FOLDER'] = 'outputs'
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-os.makedirs(app.config['OUTPUT_FOLDER'], exist_ok=True)
+# Vercel only allows writing to /tmp/
+app.config['UPLOAD_FOLDER'] = '/tmp/uploads'
+app.config['OUTPUT_FOLDER'] = '/tmp/outputs'
+try:
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    os.makedirs(app.config['OUTPUT_FOLDER'], exist_ok=True)
+except Exception:
+    pass
 
 jobs = {}
 
@@ -48,8 +52,13 @@ def upload_file():
     file.save(input_path)
     
     output_filename = f"processed_{filename}"
-    jobs[job_id] = {'status': 'queued', 'message': 'Queued...'}
-    threading.Thread(target=process_excel_background, args=(job_id, input_path, output_filename)).start()
+    jobs[job_id] = {'status': 'queued', 'message': 'Processing (Single Function)...'}
+    
+    # In Serverless, we cannot use threading easily. 
+    # We call it directly for this demo, or suggest a background worker.
+    # Note: Long-running jobs will timeout on Vercel unless using a persistent instance.
+    process_excel_background(job_id, input_path, output_filename)
+    
     return jsonify({'job_id': job_id})
 
 @app.route('/status/<job_id>')
