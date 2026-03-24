@@ -21,10 +21,17 @@ def get_path(relative_path):
 def init_browser(p, headless=True, slow_mo=100, window_pos="960,0", window_size="960,1080"):
     """Launches the browser or connects to a remote browser via CDP."""
     ws_endpoint = os.environ.get("BROWSER_WS_ENDPOINT")
+    is_vercel = os.environ.get("VERCEL") == "1"
     
     if ws_endpoint:
         print(f"Connecting to remote browser at {ws_endpoint}...")
         browser = p.chromium.connect_over_cdp(ws_endpoint)
+    elif is_vercel:
+        # Vercel has no local browser, so we MUST have a WS endpoint
+        raise Exception(
+            "BROWSER_WS_ENDPOINT is not set. Vercel deployments require a remote browser WebSocket URL "
+            "(e.g., from Browserless.io) to run Playwright."
+        )
     else:
         print(f"Launching local browser (headless={headless})...")
         browser = p.chromium.launch(
