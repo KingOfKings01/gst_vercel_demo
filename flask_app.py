@@ -4,7 +4,7 @@ import threading
 from flask import Flask, render_template, request, send_file, jsonify
 from werkzeug.utils import secure_filename
 import openpyxl
-from gst_automation_playwright import run_batch_gst_search_excel
+from gst_automation_selenium import run_batch_gst_search_excel
 
 app = Flask(__name__)
 # Vercel only allows writing to /tmp/
