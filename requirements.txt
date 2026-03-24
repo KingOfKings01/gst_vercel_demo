@@ -1,5 +1,7 @@
-selenium
-webdriver-manager
+requests
+ddddocr
+opencv-python-headless
+numpy
 flask
 openpyxl
 beautifulsoup4
