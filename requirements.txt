@@ -1,7 +1,6 @@
-requests
+playwright
 ddddocr
 opencv-python-headless
 numpy
-flask
 openpyxl
 beautifulsoup4
