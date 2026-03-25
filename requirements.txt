@@ -1,7 +1,4 @@
-requests
-ddddocr
-opencv-python-headless
-numpy
+playwright
 flask
 openpyxl
 beautifulsoup4

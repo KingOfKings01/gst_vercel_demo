@@ -3,371 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GST Automation Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>GST Search Automation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --secondary: #ec4899;
-            --bg-dark: #0f172a;
-            --card-glass: rgba(255, 255, 255, 0.05);
-            --card-glass-hover: rgba(255, 255, 255, 0.1);
-            --text-light: #f8fafc;
+            --bg: #0f172a;
+            --card: #1e293b;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --text: #e2e8f0;
             --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --border: #334155;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Outfit', sans-serif;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: var(--bg-dark);
-            background: radial-gradient(circle at top left, #1e1b4b, 0%, #0f172a, 100%);
-            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            overflow-x: hidden;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            z-index: 10;
-        }
-
-        .glass-card {
-            background: var(--card-glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 3rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .glass-card:hover {
-            box-shadow: 0 40px 80px -20px rgba(99, 102, 241, 0.2);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--primary-light), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p.subtitle {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .upload-area {
-            border: 2px dashed rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            margin-bottom: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .upload-area:hover {
-            border-color: var(--primary);
-            background: rgba(99, 102, 241, 0.05);
-            transform: scale(1.01);
-        }
-
-        .upload-area.dragging {
-            border-color: var(--secondary);
-            background: rgba(236, 72, 153, 0.1);
-        }
-
-        .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        #fileInput {
-            display: none;
-        }
-
-        .file-info {
-            margin-top: 1rem;
-            font-weight: 500;
-            color: var(--primary-light);
-            display: none;
-        }
-
-        .btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 1rem 2.5rem;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        #status-container {
-            margin-top: 2rem;
-            display: none;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            overflow: hidden;
-            margin-top: 1rem;
-            position: relative;
-        }
-
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            transition: width 0.5s ease;
-            box-shadow: 0 0 15px var(--primary);
-        }
-
-        .status-text {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        #result-container {
-            margin-top: 2rem;
-            display: none;
             flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
-            animation: fadeIn 0.5s ease-out;
+            padding: 2rem;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .success-icon {
-            font-size: 4rem;
-            color: #10b981;
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
             margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            max-width: 900px;
+            width: 100%;
         }
 
-        /* Particles animation for background */
-        .decor-circle {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            z-index: -1;
-            opacity: 0.4;
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .card h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        /* Upload Section */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        .upload-area:hover { border-color: var(--accent); }
+        .upload-area input { display: none; }
+        .upload-area p { color: var(--text-muted); font-size: 0.9rem; }
+
+        button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+        button:hover { background: var(--accent-hover); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Status Section */
+        #status-box {
+            min-height: 80px;
+            background: #0f172a;
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Captcha Section */
+        .captcha-card {
+            grid-column: 1 / -1;
+            text-align: center;
+            display: none;
+        }
+        .captcha-card.active { display: block; }
+        .captcha-card img {
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            margin: 1rem 0;
+            max-width: 300px;
+            image-rendering: pixelated;
+        }
+        .captcha-input {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+        .captcha-input input {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            letter-spacing: 0.3em;
+            width: 180px;
+            text-align: center;
+            font-family: monospace;
+        }
+        .captcha-input input:focus { outline: none; border-color: var(--accent); }
+        .captcha-input button { width: auto; margin-top: 0; }
+
+        .pulse {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        #download-btn {
+            background: var(--success);
+            display: none;
+        }
+        #download-btn:hover { background: #16a34a; }
+
+        @media (max-width: 700px) {
+            .container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="decor-circle" style="width: 400px; height: 400px; background: var(--primary); top: -100px; left: -100px;"></div>
-    <div class="decor-circle" style="width: 300px; height: 300px; background: var(--secondary); bottom: -50px; right: -50px;"></div>
+    <h1>🔍 GST Search Automation</h1>
+    <p class="subtitle">Upload Excel → Solve Captchas → Download Results</p>
 
     <div class="container">
-        <div class="glass-card">
-            <h1>GST Portal Automation</h1>
-            <p class="subtitle">Extract Nature of Business Activity & More effortlessly</p>
-            <p style="font-size: 0.9rem; color: #fbbf24; margin-bottom: 2.5rem; background: rgba(251, 191, 36, 0.1); padding: 0.8rem; border-radius: 10px; border: 1px solid rgba(251, 191, 36, 0.2);">
-                💡 Tip: Position this browser on the LEFT ⬅️. <br>
-                The automation will open on the RIGHT ➡️.
-            </p>
-
-            <div id="upload-form">
-                <div class="upload-area" onclick="document.getElementById('fileInput').click()" id="dropZone">
-                    <span class="upload-icon">📄</span>
-                    <p>Click to upload Excel file or drag and drop</p>
-                    <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Supports .xlsx and .xls</p>
-                    <div id="file-info" class="file-info">Selected: <span id="filename-display"></span></div>
-                    <input type="file" id="fileInput" accept=".xlsx, .xls">
-                </div>
-                
-                <button id="processBtn" class="btn" disabled>🚀 Start Automation</button>
+        <!-- Upload Card -->
+        <div class="card">
+            <h2>📁 Upload Excel</h2>
+            <div class="upload-area" id="drop-area" onclick="document.getElementById('fileInput').click()">
+                <input type="file" id="fileInput" accept=".xlsx,.xls">
+                <p id="file-label">Click or drag your Excel file here</p>
             </div>
+            <button id="startBtn" onclick="startProcessing()" disabled>🚀 Start Processing</button>
+            <button id="download-btn" onclick="downloadResult()">⬇️ Download Results</button>
+        </div>
 
-            <div id="status-container">
-                <span class="status-text" id="statusLabel">Initializing...</span>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressBar"></div>
-                </div>
-            </div>
+        <!-- Status Card -->
+        <div class="card">
+            <h2>📊 Status</h2>
+            <div id="status-box">Waiting for upload...</div>
+        </div>
 
-            <div id="result-container">
-                <div class="success-icon">✅</div>
-                <h3>Processing Complete!</h3>
-                <p class="subtitle">Your updated Excel file is ready for download.</p>
-                <a id="downloadLink" href="#" class="btn">⬇️ Download Results</a>
-                <button onclick="window.location.reload()" class="btn" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); box-shadow: none; margin-top: 10px;">New Job</button>
+        <!-- Captcha Card (hidden until needed) -->
+        <div class="card captcha-card" id="captcha-card">
+            <h2>🔐 Solve Captcha</h2>
+            <p style="color: var(--text-muted); margin-bottom: 0.5rem;">Type the characters shown below:</p>
+            <img id="captcha-img" src="" alt="Captcha">
+            <div class="captcha-input">
+                <input type="text" id="captcha-input" maxlength="6" placeholder="123456"
+                       onkeydown="if(event.key==='Enter') submitCaptcha()">
+                <button onclick="submitCaptcha()">Submit</button>
             </div>
         </div>
     </div>
 
     <script>
-        const fileInput = document.getElementById('fileInput');
-        const fileInfo = document.getElementById('file-info');
-        const filenameDisplay = document.getElementById('filename-display');
-        const processBtn = document.getElementById('processBtn');
-        const uploadForm = document.getElementById('upload-form');
-        const statusContainer = document.getElementById('status-container');
-        const progressBar = document.getElementById('progressBar');
-        const statusLabel = document.getElementById('statusLabel');
-        const resultContainer = document.getElementById('result-container');
-        const downloadLink = document.getElementById('downloadLink');
+        let jobId = null;
+        let polling = null;
+        let captchaPolling = null;
 
-        let currentJobId = null;
-        let lastMessage = "";
+        // File selection
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                document.getElementById('file-label').textContent = e.target.files[0].name;
+                document.getElementById('startBtn').disabled = false;
+            }
+        });
 
-        // Notification permission request
-        if (Notification.permission === 'default') {
-            Notification.requestPermission();
+        function updateStatus(msg) {
+            const box = document.getElementById('status-box');
+            box.textContent = msg;
+            box.scrollTop = box.scrollHeight;
         }
 
-        function notify(title, body) {
-            if (Notification.permission === 'granted') {
-                new Notification(title, { body: body });
-                // Audible alert
-                const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
-                audio.play().catch(e => console.log("Audio play blocked by browser"));
-            }
-        }
+        function startProcessing() {
+            const file = document.getElementById('fileInput').files[0];
+            if (!file) return;
 
-        fileInput.addEventListener('change', (e) => {
-            if (fileInput.files.length > 0) {
-                filenameDisplay.textContent = fileInput.files[0].name;
-                fileInfo.style.display = 'block';
-                processBtn.disabled = false;
-            }
-        });
-
-        const dropZone = document.getElementById('dropZone');
-        dropZone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropZone.classList.add('dragging');
-        });
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragging'));
-        dropZone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropZone.classList.remove('dragging');
-            fileInput.files = e.dataTransfer.files;
-            if (fileInput.files.length > 0) {
-                filenameDisplay.textContent = fileInput.files[0].name;
-                fileInfo.style.display = 'block';
-                processBtn.disabled = false;
-            }
-        });
-
-        processBtn.addEventListener('click', async () => {
             const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
+            formData.append('file', file);
 
-            processBtn.disabled = true;
-            uploadForm.style.display = 'none';
-            statusContainer.style.display = 'block';
-            statusLabel.textContent = 'Uploading and queuing job...';
+            document.getElementById('startBtn').disabled = true;
+            updateStatus('Uploading...');
 
-            try {
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-                const data = await response.json();
-                
-                if (data.job_id) {
-                    currentJobId = data.job_id;
-                    pollStatus();
-                } else {
-                    alert('Upload failed: ' + (data.error || 'Unknown error'));
-                    window.location.reload();
-                }
-            } catch (err) {
-                alert('Connection error');
-                window.location.reload();
-            }
-        });
-
-        async function pollStatus() {
-            if (!currentJobId) return;
-
-            try {
-                const response = await fetch(`/status/${currentJobId}`);
-                const data = await response.json();
-
-                if (data.message && data.message !== lastMessage) {
-                    statusLabel.textContent = data.message;
-                    lastMessage = data.message;
-                    
-                    if (data.message.includes("Manual Input Required")) {
-                        notify("GST Automation: Attention Required", "Captcha needs manual input!");
-                        // Removed alert per user request
-                    }
-                }
-
-                if (data.status === 'processing') {
-                    progressBar.style.width = '70%'; 
-                } else if (data.status === 'completed') {
-                    progressBar.style.width = '100%';
-                    statusLabel.textContent = 'Done!';
-                    notify("GST Automation: Completed", "Your updated Excel file is ready.");
-                    setTimeout(showResult, 500);
-                } else if (data.status === 'failed') {
-                    alert('Process failed: ' + data.error);
-                    window.location.reload();
-                } else {
-                    statusLabel.textContent = data.message || 'In queue...';
-                }
-
-                if (data.status !== 'completed' && data.status !== 'failed') {
-                    setTimeout(pollStatus, 3000);
-                }
-            } catch (err) {
-                console.error('Polling error', err);
-                setTimeout(pollStatus, 5000);
-            }
+            fetch('/upload', { method: 'POST', body: formData })
+                .then(r => r.json())
+                .then(data => {
+                    jobId = data.job_id;
+                    updateStatus('Processing started. Watch for captchas below!');
+                    startPolling();
+                    startCaptchaPolling();
+                })
+                .catch(err => updateStatus('Upload error: ' + err));
         }
 
-        function showResult() {
-            statusContainer.style.display = 'none';
-            resultContainer.style.display = 'flex';
-            downloadLink.href = `/download/${currentJobId}`;
+        function startPolling() {
+            polling = setInterval(() => {
+                fetch('/status/' + jobId)
+                    .then(r => r.json())
+                    .then(data => {
+                        updateStatus(data.message || data.status);
+                        if (data.status === 'completed') {
+                            clearInterval(polling);
+                            stopCaptchaPolling();
+                            document.getElementById('download-btn').style.display = 'block';
+                            document.getElementById('captcha-card').classList.remove('active');
+                        } else if (data.status === 'failed') {
+                            clearInterval(polling);
+                            stopCaptchaPolling();
+                            updateStatus('❌ Failed: ' + (data.error || 'Unknown error'));
+                        }
+                    });
+            }, 1500);
+        }
+
+        function startCaptchaPolling() {
+            captchaPolling = setInterval(() => {
+                fetch('/captcha')
+                    .then(r => r.json())
+                    .then(data => {
+                        const card = document.getElementById('captcha-card');
+                        if (data.waiting && data.image_b64) {
+                            card.classList.add('active');
+                            document.getElementById('captcha-img').src = 'data:image/png;base64,' + data.image_b64;
+                            document.getElementById('captcha-input').value = '';
+                            document.getElementById('captcha-input').focus();
+                        } else {
+                            card.classList.remove('active');
+                        }
+                    });
+            }, 1000);
+        }
+
+        function stopCaptchaPolling() {
+            if (captchaPolling) clearInterval(captchaPolling);
+        }
+
+        function submitCaptcha() {
+            const val = document.getElementById('captcha-input').value.trim();
+            if (val.length === 0) return;
+            fetch('/captcha/solve', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ solution: val })
+            }).then(() => {
+                document.getElementById('captcha-card').classList.remove('active');
+                updateStatus('Captcha submitted! Waiting for result...');
+            });
+        }
+
+        function downloadResult() {
+            window.location.href = '/download/' + jobId;
         }
     </script>
 </body>
