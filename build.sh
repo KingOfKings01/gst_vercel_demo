@@ -3,6 +3,3 @@
 set -o errexit
 
 pip install -r requirements.txt
-
-# Install Playwright browsers
-playwright install chromium
